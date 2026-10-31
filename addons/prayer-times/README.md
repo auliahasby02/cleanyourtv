@@ -77,3 +77,6 @@ Prayer icons: [Lucide](https://lucide.dev) (ISC) and [Feather](https://featheric
 ## Maintainer
 
 [@majnioui](https://github.com/majnioui)
+
+
+Build target: Kabupaten Tegal, Indonesia.
