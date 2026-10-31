@@ -26,6 +26,7 @@ countdown to it, plus today's Gregorian and Hijri dates. Each prayer has its Ara
 | Permission | Why |
 |---|---|
 | `INTERNET` | Aladhan: today's times for the configured coordinates. |
+| `POST_NOTIFICATIONS` | Displays prayer reminder notifications on Android 13+. |
 | `SCHEDULE_EXACT_ALARM` | Exact alarm scheduling for prayer time reminders. |
 | `RECEIVE_BOOT_COMPLETED` | Reschedules prayer alarms automatically when the TV boots. |
 | `WAKE_LOCK` | Briefly wakes the screen to deliver the on-screen alert card. |
