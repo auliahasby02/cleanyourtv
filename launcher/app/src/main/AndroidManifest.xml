@@ -68,7 +68,10 @@
         <!-- Coocaa OS sources for the Inputs menu (coocaa_sources); see CoocaaSources. -->
         <provider android:authorities="com.skyworth.tv.provider" />
         <provider android:authorities="com.skyworth.tv.sdk.provider" />
+        <provider android:authorities="com.majnioui.tv.prayer.data" />
     </queries>
+
+        <uses-permission android:name="com.majnioui.tv.prayer.permission.READ_PRAYER_DATA" />
 
     <application
         android:label="@string/app_name"

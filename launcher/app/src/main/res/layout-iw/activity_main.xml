@@ -396,6 +396,48 @@
             </LinearLayout>
         </RelativeLayout>
 
+        <LinearLayout
+            android:id="@+id/prayerPanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:padding="6dp"
+            android:orientation="vertical"
+            android:background="#33202A3A"
+            android:focusable="false"
+            android:clickable="false"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/prayerNextLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="JADWAL SALAT"
+                android:textColor="#E8EDF5"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:focusable="false" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="5dp">
+
+                <TextView android:id="@+id/prayerImsak" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="IMSAK\n--:--" android:textColor="#DCE6F2" android:textSize="10sp" />
+                <TextView android:id="@+id/prayerFajr" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="SUBUH\n--:--" android:textColor="#DCE6F2" android:textSize="10sp" />
+                <TextView android:id="@+id/prayerSunrise" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="TERBIT\n--:--" android:textColor="#DCE6F2" android:textSize="10sp" />
+                <TextView android:id="@+id/prayerDhuhr" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="DZUHUR\n--:--" android:textColor="#DCE6F2" android:textSize="10sp" />
+                <TextView android:id="@+id/prayerAsr" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="ASHAR\n--:--" android:textColor="#DCE6F2" android:textSize="10sp" />
+                <TextView android:id="@+id/prayerMaghrib" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="MAGHRIB\n--:--" android:textColor="#DCE6F2" android:textSize="10sp" />
+                <TextView android:id="@+id/prayerIsha" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="ISYA\n--:--" android:textColor="#DCE6F2" android:textSize="10sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+
         <!-- The wrapper clips at the grid's edge; the grid itself must not clip so scaled tiles can overflow their cells. -->
         <FrameLayout
             android:layout_width="match_parent"

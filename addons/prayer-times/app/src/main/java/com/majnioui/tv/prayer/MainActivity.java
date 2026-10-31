@@ -153,11 +153,10 @@ public class MainActivity extends Activity {
                 try {
                     parse(result.getJSONObject("data"));
                     loadedFor = day;
-                    if (getResources().getBoolean(R.bool.reminders)) {
-                        PrayerScheduler.saveTimingsAndSchedule(MainActivity.this, day, NAMES, times, minutes, getString(R.string.place));
-                    } else {
-                        PrayerScheduler.cancel(MainActivity.this);
-                    }
+                    PrayerScheduler.saveTimingsAndSchedule(
+                        MainActivity.this, day, NAMES, times, minutes,
+                        getString(R.string.place)
+                    );
                     render();
                 } catch (Exception e) {
                     Log.w(TAG, "parse: " + e);

@@ -409,11 +409,16 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             updateClockVisibility();
         }
     };
+    private android.widget.LinearLayout prayerPanel;
+    private android.widget.TextView prayerNextLabel;
+    private android.widget.TextView[] prayerTimeViews;
+
     private final Runnable minuteTick = new Runnable() {
         @Override
         public void run() {
             updateGreeting();
             updatePanel();
+            updatePrayerPanel();
             // The pill follows the network callbacks and each return to Home; only the festive light follows the
             // signal level, so only it needs this minute's binder calls (about 7 ms on the UI thread).
             if (festive) updateWifiLabel();
@@ -582,6 +587,15 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         libraryExcludedApps = new HashSet<>(cfg.libraryExcludedApps);
 
         grid = findViewById(R.id.grid);
+        prayerPanel = findViewById(R.id.prayerPanel);
+        prayerNextLabel = findViewById(R.id.prayerNextLabel);
+        prayerTimeViews = new android.widget.TextView[] {
+            findViewById(R.id.prayerImsak), findViewById(R.id.prayerFajr),
+            findViewById(R.id.prayerSunrise), findViewById(R.id.prayerDhuhr),
+            findViewById(R.id.prayerAsr), findViewById(R.id.prayerMaghrib),
+            findViewById(R.id.prayerIsha)
+        };
+
         rtlAppGrid = getResources().getBoolean(R.bool.rtl_app_grid);
         // Mirror only the app grid; the header and other locales keep their own layouts.
         // single_row: one span laid out sideways, so the same adapter, glass and dock band serve a scrolling row.
@@ -1026,6 +1040,82 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         tileRefresh.onStart();
     }
 
+
+    private void updatePrayerPanel() {
+        if (prayerPanel == null) return;
+        android.database.Cursor c = null;
+        try {
+            android.net.Uri uri = android.net.Uri.parse(
+                "content://com.majnioui.tv.prayer.data/today");
+            c = getContentResolver().query(uri, null, null, null, null);
+
+            if (c == null || !c.moveToFirst()) {
+                prayerPanel.setVisibility(View.GONE);
+                return;
+            }
+
+            String[] keys = {"imsak","fajr","sunrise","dhuhr","asr","maghrib","isha"};
+            String[] labels = {"IMSAK","SUBUH","TERBIT","DZUHUR","ASHAR","MAGHRIB","ISYA"};
+            String[] values = new String[7];
+
+            for (int i = 0; i < 7; i++) {
+                int col = c.getColumnIndex(keys[i]);
+                values[i] = col < 0 ? null : c.getString(col);
+                if (values[i] == null || values[i].length() < 5) {
+                    prayerPanel.setVisibility(View.GONE);
+                    return;
+                }
+                prayerTimeViews[i].setText(labels[i] + "\n" + values[i]);
+                prayerTimeViews[i].setTextColor(0xFFDCE6F2);
+            }
+
+            int[] indexes = {1,3,4,5,6};
+            String[] names = {"Subuh","Dzuhur","Ashar","Maghrib","Isya"};
+            java.time.LocalTime now = java.time.LocalTime.now();
+            java.time.LocalTime next = null;
+            String nextName = "Subuh";
+            int nextIndex = 1;
+            boolean tomorrow = false;
+
+            for (int i = 0; i < indexes.length; i++) {
+                int idx = indexes[i];
+                java.time.LocalTime t =
+                    java.time.LocalTime.parse(values[idx].substring(0,5));
+                if (now.isBefore(t)) {
+                    next = t;
+                    nextName = names[i];
+                    nextIndex = idx;
+                    break;
+                }
+            }
+
+            if (next == null) {
+                next = java.time.LocalTime.parse(values[1].substring(0,5));
+                tomorrow = true;
+            }
+
+            java.time.LocalDateTime target =
+                java.time.LocalDate.now().atTime(next);
+            if (tomorrow) target = target.plusDays(1);
+
+            long sec = java.time.Duration.between(
+                java.time.LocalDateTime.now(), target).getSeconds();
+            if (sec < 0) sec = 0;
+
+            prayerTimeViews[nextIndex].setTextColor(0xFFFFCC66);
+            prayerNextLabel.setText("JADWAL SALAT  •  " + nextName +
+                " DALAM " + String.format(java.util.Locale.ROOT,
+                "%02d:%02d", sec / 3600, (sec % 3600) / 60));
+            prayerPanel.setVisibility(View.VISIBLE);
+
+        } catch (Exception e) {
+            prayerPanel.setVisibility(View.GONE);
+            android.util.Log.w("PrayerPanel", "Gagal membaca jadwal", e);
+        } finally {
+            if (c != null) c.close();
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -1061,6 +1151,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (openLiveTvAfterBoot()) return;
         updateGreeting();
         updatePanel();
+        updatePrayerPanel();
         // The network and Inputs pills keep their state while Home is in the background, and callbacks update them
         // when the network or the inputs change, so this refresh only catches anything missed. Its binder calls
         // (about 7 ms on a TCL C755, most of it WifiManager.getConnectionInfo) would hold up the first frame back

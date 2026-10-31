@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
+    <permission android:name="com.majnioui.tv.prayer.permission.READ_PRAYER_DATA" android:protectionLevel="normal" />
+
     <application
         android:label="Prayer Times"
         android:icon="@drawable/icon"
@@ -52,5 +54,11 @@
             </intent-filter>
         </receiver>
 
+        <provider
+            android:name=".PrayerDataProvider"
+            android:authorities="com.majnioui.tv.prayer.data"
+            android:exported="true"
+            android:readPermission="com.majnioui.tv.prayer.permission.READ_PRAYER_DATA"
+            android:grantUriPermissions="false" />
     </application>
 </manifest>
