@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Prayer Times</string>
+    <string name="prayer_imsak">Imsak</string>
     <string name="prayer_fajr">Fajr</string>
     <string name="prayer_sunrise">Sunrise</string>
     <string name="prayer_dhuhr">Dhuhr</string>
