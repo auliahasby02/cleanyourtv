@@ -34,18 +34,18 @@ import java.util.Locale;
  */
 public class MainActivity extends Activity {
     private static final String TAG = "PrayerTimes";
-    private static final String[] NAMES = {"Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"};
+    private static final String[] NAMES = {"Imsak", "Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"};
     private static final int[] NAME_RES = {
-            R.string.prayer_fajr,
-            R.string.prayer_sunrise,
-            R.string.prayer_dhuhr,
-            R.string.prayer_asr,
-            R.string.prayer_maghrib,
+            R.string.prayer_imsak, R.string.prayer_fajr, R.string.prayer_sunrise,
+            R.string.prayer_dhuhr, R.string.prayer_asr, R.string.prayer_maghrib,
             R.string.prayer_isha
     };
-    private static final String[] ARABIC = {"الفجر", "الشروق", "الظهر", "العصر", "المغرب", "العشاء"};
-    private static final int[] ICONS = {R.drawable.ic_fajr, R.drawable.ic_sunrise, R.drawable.ic_dhuhr,
-            R.drawable.ic_asr, R.drawable.ic_maghrib, R.drawable.ic_isha};
+    private static final String[] ARABIC = {"الإمساك", "الفجر", "الشروق", "الظهر", "العصر", "المغرب", "العشاء"};
+    private static final int[] ICONS = {
+            R.drawable.ic_fajr, R.drawable.ic_fajr, R.drawable.ic_sunrise,
+            R.drawable.ic_dhuhr, R.drawable.ic_asr, R.drawable.ic_maghrib,
+            R.drawable.ic_isha
+    };
     private static final long MINUTE_MS = 60_000L;
 
     private final Handler main = new Handler(Looper.getMainLooper());
@@ -185,7 +185,7 @@ public class MainActivity extends Activity {
         methodName = method != null ? method.optString("name", "") : "";
         JSONObject date = data.getJSONObject("date");
         JSONObject hijri = date.getJSONObject("hijri");
-        dates.setText(new SimpleDateFormat("EEEE d MMMM", Locale.ENGLISH).format(new Date()) + "  ·  "
+        dates.setText(new SimpleDateFormat("EEEE d MMMM", new Locale("id", "ID")).format(new Date()) + "  ·  "
                 + hijri.getString("day") + " " + hijri.getJSONObject("month").getString("en") + " "
                 + hijri.getString("year") + " AH");
     }
@@ -196,7 +196,7 @@ public class MainActivity extends Activity {
         int now = c.get(Calendar.HOUR_OF_DAY) * 60 + c.get(Calendar.MINUTE);
         int nextIdx = -1;
         for (int i = 0; i < NAMES.length; i++) {
-            if (i == 1) continue;   // sunrise is shown but is not a prayer
+            if (i == 0 || i == 2) continue; // Imsak and sunrise are not prayers
             if (minutes[i] > now) { nextIdx = i; break; }
         }
         if (nextIdx >= 0) {
@@ -204,7 +204,7 @@ public class MainActivity extends Activity {
             String timeStr = (left >= 60 ? left / 60 + " h " : "") + left % 60 + " min";
             next.setText(getString(R.string.prayer_in, getString(NAME_RES[nextIdx]), timeStr));
         } else {
-            next.setText(getString(R.string.prayer_tomorrow, getString(NAME_RES[0])));
+            next.setText(getString(R.string.prayer_tomorrow, getString(NAME_RES[1])));
         }
 
         rows.removeAllViews();

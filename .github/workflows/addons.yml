@@ -40,3 +40,11 @@ jobs:
             (cd "addons/$a" && chmod +x gradlew && ./gradlew --no-daemon assembleRelease)
             echo "::endgroup::"
           done
+
+      - name: Upload Prayer Times APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: jadwal-sholat-kabupaten-tegal
+          path: addons/prayer-times/app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
+          retention-days: 14

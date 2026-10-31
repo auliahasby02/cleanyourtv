@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Jadwal Sholat</string>
+    <string name="prayer_imsak">Imsak</string>
     <string name="prayer_fajr">Subuh</string>
     <string name="prayer_sunrise">Syuruq</string>
     <string name="prayer_dhuhr">Dzuhur</string>
