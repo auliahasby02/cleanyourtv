@@ -1,4 +1,6 @@
 package com.majnioui.tv.prayer;
+import android.Manifest;
+import android.content.pm.PackageManager;
 
 import android.app.Activity;
 import android.graphics.Typeface;
@@ -74,6 +76,9 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle state) {
         super.onCreate(state);
+        if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1001);
+        }
         font = getResources().getFont(R.font.outfit);
         accent = getColor(R.color.accent);
 

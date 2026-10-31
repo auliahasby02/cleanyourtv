@@ -9,5 +9,5 @@
     <string name="method" translatable="false">20</string>
     <color name="accent">#2BB673</color>
     <!-- Show an on-screen alert card when a prayer time arrives. Off by default. -->
-    <bool name="reminders">false</bool>
+    <bool name="reminders">true</bool>
 </resources>
